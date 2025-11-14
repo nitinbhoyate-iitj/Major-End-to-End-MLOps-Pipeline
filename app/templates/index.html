@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Classifier</title>
+</head>
+<body>
+    <h2>Upload Image for Prediction</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction != None %}
+        <h3>Predicted Class: {{ prediction }}</h3>
+    {% endif %}
+</body>
+</html>

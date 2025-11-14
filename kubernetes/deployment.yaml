@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlops-app
+  namespace: mlops-major
+  labels:
+    app: mlops-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mlops-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: mlops-app
+    spec:
+      containers:
+      - name: mlops-container
+        image: nitinbhoyateiitj/mlops_major_nitinbhoyate:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5001
+        # Basic resources; tune for your environment
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        # Liveness and readiness probe hitting root URL of Flask app
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5001
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 2
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5001
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3

@@ -2,3 +2,4 @@ scikit-learn
 joblib
 Flask
 numpy
+Pillow
